@@ -34,7 +34,5 @@ jobs:
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
           SOURCE_BRANCH="develop"
-          TITLE="test ${{ github.event.pull_request.title }} backport"
 
-          cd scripts && ./backport.sh $PR_NUMBER $SOURCE_BRANCH $TITLE
-
+          cd scripts && ./backport.sh $PR_NUMBER $SOURCE_BRANCH ${{ github.event.pull_request.html_url }}
