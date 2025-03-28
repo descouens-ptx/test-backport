@@ -1,0 +1,13 @@
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'release'
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fake cd
+        run: |
+          echo "cd all"
