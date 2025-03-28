@@ -10,11 +10,17 @@ env:
 
 jobs:
   backport:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: test
+        run:
+          echo "${{ github.event.pull_request.merged }}"
 
       - name: Create backport branch
         run: |
