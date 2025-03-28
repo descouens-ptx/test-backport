@@ -1,0 +1,19 @@
+on:
+  pull_request:
+    types: [labeled]
+    branches:
+      - 'develop'
+env:
+  GH_TOKEN: ${{ secrets.PAT }}
+
+jobs:
+  merge-backport:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔜 Checkout
+        uses: actions/checkout@v4
+
+      - name: Merge
+        if: github.event.label.name == 'backport'
+        run: |
+          gh pr merge ${{ github.event.number }} --merge --disable-auto
