@@ -12,6 +12,8 @@ env:
   GIT_COMMITTER_NAME: "GitHub Actions"
   GIT_COMMITTER_EMAIL: "actions@github.com"
 
+permissions: write
+
 jobs:
   backport:
     if: github.event.pull_request.merged
