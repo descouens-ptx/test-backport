@@ -33,6 +33,7 @@ jobs:
       - name: Create backport branch
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
-          SOURCE_BRANCH="develop"
+          BASE_BRANCH="develop"
+          HEAD_BRANCH=${{ github.event.pull_request.base.ref }}
 
-          cd scripts && ./backport.sh $PR_NUMBER $SOURCE_BRANCH ${{ github.event.pull_request.html_url }}
+          cd scripts && ./backport.sh $PR_NUMBER $BASE_BRANCH $HEAD_BRANCH 
