@@ -7,6 +7,10 @@ on:
       - 'production'
 env:
   GH_TOKEN: ${{ secrets.PAT }}
+  GIT_AUTHOR_NAME: "GitHub Actions"
+  GIT_AUTHOR_EMAIL: "actions@github.com"
+  GIT_COMMITTER_NAME: "GitHub Actions"
+  GIT_COMMITTER_EMAIL: "actions@github.com"
 
 jobs:
   backport:
@@ -17,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: develop
 
       - name: test
         run:

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+ERROR=false
 # Arguments
 PR_NUMBER="$1"
 SOURCE_BRANCH="$2"
