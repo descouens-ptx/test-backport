@@ -1,30 +1,17 @@
 #!/usr/bin/env bash
-
-ERROR=false
+#
 # Arguments
 PR_NUMBER="$1"
 BASE_BRANCH="$2"
+HEAD_BRANCH="$3"
 
-BACKPORT_BRANCH="backport-to-${BASE_BRANCH}/pr-${PR_NUMBER}"
-PR_COMMITS=$(gh pr view $PR_NUMBER --json commits | jq -r '.commits[].oid')
-PR_BODY="Automated backport of #$PR_NUMBER to ${SOURCE_BRANCH}"
+PR_COUNT=$(gh pr list --head $HEAD_BRANCH --base $BASE_BRANCH --json number --jq 'length')
+PR_BODY="Automated backport from $SOURCE_BRANCH to ${BASE_BRANCH}"
 
-echo "git switch -c $BACKPORT_BRANCH $BASE_BRANCH"
-git switch -c $BACKPORT_BRANCH $BASE_BRANCH
-
-for commit in $PR_COMMITS; do
-  echo "git cherry-pick $commit"
-  if ! git cherry-pick $commit; then
-    echo "Cannot cherry-pick commit $commit"
-    ERROR=true
-  fi
-done
-
-if [[ $ERROR == false ]]; then
-  git push origin $BACKPORT_BRANCH
-  gh pr create -B $BASE_BRANCH -H $BACKPORT_BRANCH --title "backport: from PR #${PR_NUMBER} to $BASE_BRANCH" --body "🤖 This is an automatic backport of the Pull Request #$PR_NUMBER"
+if [[ $PR_COUNT -eq 0 ]]; then
+  gh pr create -B $BASE_BRANCH -H $HEAD_BRANCH --title "backport: from ${HEAD_BRANCH} to $BASE_BRANCH" --body "🤖 This is an automatic backport from $HEAD_BRANCH to $BASE_BRANCH"
 else
-  echo "Could not successfuly cherry pick the commits in the backport PR."
-  gh pr comment $PR_NUMBER --body "The automatic backport failed. Please check the logs."
+  echo "A PR from $HEAD_BRANCH to $BASE_BRANCH already exists."
+  gh pr comment $PR_NUMBER --body "A PR from $HEAD_BRANCH to $BASE_BRANCH already exists."
   exit 1
 fi
