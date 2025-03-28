@@ -4,7 +4,7 @@ ERROR=false
 # Arguments
 PR_NUMBER="$1"
 SOURCE_BRANCH="$2"
-PR_TITLE="[Backport] $3"
+PR_URL="$3"
 
 BACKPORT_BRANCH="backport-${SOURCE_BRANCH}-to-develop/pr-${PR_NUMBER}"
 PR_COMMITS=$(gh pr view $PR_NUMBER --json commits | jq -r '.commits[].oid')
@@ -23,4 +23,8 @@ done
 
 if [[ $ERROR == false ]]; then
   git push origin $BACKPORT_BRANCH
+  gh pr create --title "backport: to $SOURCE_BRANCH" --body "This is a backport of the Pull Request #$PR_NUMBER: $PR_URL"
+else
+  echo "Could not cherry pick the commit."
+  exit 1
 fi
