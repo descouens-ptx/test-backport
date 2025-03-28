@@ -1,0 +1,26 @@
+name: Backport to develop
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - 'release'
+      - 'production'
+env:
+  GH_TOKEN: ${{ secrets.PAT }}
+
+jobs:
+  backport:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create backport branch
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          SOURCE_BRANCH="${{ github.event.pull_request.base.ref }}"
+          TITLE="test ${{ github.event.pull_request.title }} backport"
+
+          cd scripts && ./backport.sh $PR_NUMBER $SOURCE_BRANCH $TITLE
+
