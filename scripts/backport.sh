@@ -13,5 +13,4 @@ if [[ $PR_COUNT -eq 0 ]]; then
 else
   echo "A PR from $HEAD_BRANCH to $BASE_BRANCH already exists."
   gh pr comment $PR_NUMBER --body "A PR from $HEAD_BRANCH to $BASE_BRANCH already exists."
-  exit 1
 fi
