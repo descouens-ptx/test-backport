@@ -25,6 +25,6 @@ if [[ $ERROR == false ]]; then
   gh pr create -B $BASE_BRANCH -H $BACKPORT_BRANCH --title "backport: from ${PR_NUMBER} to $BASE_BRANCH" --body "🤖 This is an automatic backport of the Pull Request #$PR_NUMBER"
 else
   echo "Could not cherry pick the commit."
-  gh pr comment $PR_NUMBER "The automatic backport failed. Please check the logs."
+  gh pr comment $PR_NUMBER --body "The automatic backport failed. Please check the logs."
   exit 1
 fi
