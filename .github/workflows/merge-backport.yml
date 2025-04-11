@@ -1,10 +1,15 @@
+name: 🚀 Merge backport PR
 on:
   pull_request:
-    types: [labeled]
+    types: [opened]
     branches:
       - 'develop'
 env:
   GH_TOKEN: ${{ secrets.PAT }}
+  GIT_AUTHOR_NAME: "Pubtex machine user"
+  GIT_AUTHOR_EMAIL: "github-system@g.sys.pubtex.com"
+  GIT_COMMITTER_NAME: "Pubtex machine user"
+  GIT_COMMITTER_EMAIL: "github-system@g.sys.pubtex.com"
 
 jobs:
   merge-backport:
@@ -13,7 +18,7 @@ jobs:
       - name: 🔜 Checkout
         uses: actions/checkout@v4
 
-      - name: Merge
-        if: github.event.label.name == 'backport' && github.event.pull_request.head.ref == 'release'
+      - name: 🚀 Merge
+        if: github.event.pull_request.head.ref == 'release' || github.event.pull_request.head.ref == 'production'
         run: |
-          gh pr merge ${{ github.event.number }} --rebase
+          gh pr merge ${{ github.event.number }} --merge --auto
