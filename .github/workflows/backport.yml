@@ -1,4 +1,4 @@
-name: Backport to develop
+name: 📦 Backport to develop
 on:
   pull_request:
     types: [closed]
@@ -7,30 +7,26 @@ on:
       - 'production'
 env:
   GH_TOKEN: ${{ secrets.PAT }}
-  GIT_AUTHOR_NAME: "GitHub Actions"
-  GIT_AUTHOR_EMAIL: "actions@github.com"
-  GIT_COMMITTER_NAME: "GitHub Actions"
-  GIT_COMMITTER_EMAIL: "actions@github.com"
+  GIT_AUTHOR_NAME: "Pubtex machine user"
+  GIT_AUTHOR_EMAIL: "github-system@g.sys.pubtex.com"
+  GIT_COMMITTER_NAME: "Pubtex machine user"
+  GIT_COMMITTER_EMAIL: "github-system@g.sys.pubtex.com"
 
 permissions: 
   contents: 'write'
 
 jobs:
   backport:
-    if: github.event.pull_request.merged && github.event.pull_request.head.ref != 'develop'
-    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged && github.event.pull_request.head.ref != 'develop' && github.event.pull_request.head.ref != 'release'
+    runs-on: pub-hub
     steps:
-      - name: Checkout code
+      - name: 🔜 Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: develop
 
-      - name: test
-        run:
-          echo "${{ github.event.pull_request.merged }}"
-
-      - name: Create backport branch
+      - name: 🔜 Create backport branch
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
           BASE_BRANCH="develop"
