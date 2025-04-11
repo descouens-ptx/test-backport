@@ -18,7 +18,7 @@ permissions:
 jobs:
   backport:
     if: github.event.pull_request.merged && github.event.pull_request.head.ref != 'develop' && github.event.pull_request.head.ref != 'release'
-    runs-on: pub-hub
+    runs-on: ubuntu-latest
     steps:
       - name: 🔜 Checkout code
         uses: actions/checkout@v4

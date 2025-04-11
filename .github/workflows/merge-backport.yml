@@ -13,7 +13,7 @@ env:
 
 jobs:
   merge-backport:
-    runs-on: pub-hub
+    runs-on: ubuntu-latest
     steps:
       - name: 🔜 Checkout
         uses: actions/checkout@v4
